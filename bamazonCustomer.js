@@ -54,12 +54,11 @@ function promptUserPurchase () {
     connection.query(queryStr, { item_id: item }, function (err, data) {
       if (err) throw err
 
-      // when user has selected an invalid item ID, data attay will be empty
-      // console.log('data = ' + JSON.stringify(data));
+     
 
       if (data.length === 0) {
         console.log('ERROR: Invalid Item ID. Please select a valid Item ID.')
-        displayInventory()
+        showInventory()
       } else {
         var productData = data[0]
 
@@ -67,11 +66,10 @@ function promptUserPurchase () {
         if (quantity <= productData.stock_quantity) {
           console.log('YES!, the product you requested is in stock! Placing order!')
 
-          // Construct the updating query string
+          // Construct updating query string
           var updateQueryStr = 'UPDATE products SET stock_quantity = ' + (productData.stock_quantity - quantity) + ' WHERE item_id = ' + item
-          // console.log('updateQueryStr = ' + updateQueryStr);
 
-          // Update the inventory
+          // Updates the inventory
           connection.query(updateQueryStr, function (err, data) {
             if (err) throw err
 
@@ -87,7 +85,7 @@ function promptUserPurchase () {
           console.log('Please modify your order.')
           console.log('\n---------------------------------------------------------------------\n')
 
-          displayInventory()
+          showInventory()
         }
       }
     })
@@ -95,8 +93,8 @@ function promptUserPurchase () {
 }
 
 // retrieves inventory from db and outputs to console
-function displayInventory () {
-  // console.log('___ENTER displayInventory___');
+function showInventory () {
+  // console.log('___ENTER showInventory___');
 
   // Construct the db query string
   queryStr = 'SELECT * FROM products'
@@ -131,7 +129,7 @@ function runBamazon () {
   // console.log('___ENTER runBamazon___');
 
   // available inventory
-  displayInventory()
+  showInventory()
 }
 
 runBamazon()
